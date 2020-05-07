@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgiving Habit Checklist</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="cookie_management.js"></script>
+    <script src="model.js"></script>
+    <script src="controller.js"></script>
+    <script src="date_management.js"></script>
+    <script src="view.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <h1 id="header-text"></h1>
+            <h1 id="progressMeter" class="floatright"></h1>
+        </header>
+
+        <div id="checklist"></div>
+
+        <div id="add-habit" class="box clickable">
+            ➕ Legg til en god vane
+        </div>
+
+        <div id="add-habit-info" class="box" hidden>
+            <input type="text" id="add-habit-name-input">
+            <button id="save-habit-button" class="floatright clickable">Lagre</button>
+        </div>
+
+        <div id="change-habit" class="box clickable">
+            🚩 Endre en god vane
+        </div>
+
+        <div id="remove-habit" class="box clickable">
+            ➖ Fjern til en god vane
+        </div>
+    </div>
+
+    <script>
+        const habitlist = document.getElementById('checklist');
+        const addHabitButton = document.getElementById('add-habit');
+        const addHabitInfoBox = document.getElementById('add-habit-info');
+        const saveHabitButton = document.getElementById('save-habit-button');
+        const addHabitInput = document.getElementById('add-habit-name-input');
+        const changeHabitButton = document.getElementById('change-habit');
+        const removeHabitButton = document.getElementById('remove-habit');
+
+        if (cookies().date !== getDateString()) {
+            for (let i = 0; i < model.habits.length; i++) {
+                setHabitCookie(i, 'false');
+            }
+        }
+
+        setDateHeader();
+        show();
+
+        addHabitButton.onclick = function() {
+            const value = window.prompt("Legg til en god vane", '');
+            if (!value) return;
+            addHabitCookie(value);
+            show();
+            return;
+
+            if (addHabitInfoBox.hidden) {
+                addHabitInfoBox.hidden = false;
+            } else {
+                addHabitInfoBox.hidden = true;
+            }
+        };
+
+        saveHabitButton.onclick = function() {
+            const value = addHabitInput.value;
+            addHabitInput.value = '';
+            addHabitInfoBox.hidden = true;
+            addHabitCookie(value);
+            show();
+        };
+
+        removeHabitButton.onclick = function() {
+            if (model.mode === 'delete') {
+                model.mode = 'normal';
+            } else {
+                model.mode = 'delete';
+            }
+            show();
+        };
+
+        changeHabitButton.onclick = function() {
+            if (model.mode === 'change') {
+                model.mode = 'normal';
+            } else {
+                model.mode = 'change';
+            }
+            show();
+        };
+    </script>
+</body>
+
+</html>
