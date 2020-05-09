@@ -52,7 +52,7 @@
 
         if (cookies().date !== getDateString()) {
             for (let i = 0; i < model.habits.length; i++) {
-                let habitId = `habit-${i}-name`;
+                let habitId = `habit-${i}`;
                 setCookie(habitId, 'false');
             }
         }
