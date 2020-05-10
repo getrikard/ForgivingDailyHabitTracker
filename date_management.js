@@ -17,7 +17,7 @@ function getWeekdayName(d) {
             return 'Fredag';
         case 6:
             return 'Lørdag';
-        case 7:
+        case 0:
             return 'Søndag';
     }
 }
